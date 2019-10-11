@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'home/dynamic.dart';
+import 'home/home.dart';
+import 'home/loan.dart';
+import 'home/my.dart';
+
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -9,15 +15,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: new Demo(),
@@ -35,16 +32,58 @@ class Demo extends StatefulWidget {
 
 class DemoT extends State<Demo> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    return new TabPage3Layout();
+  }
+}
+
+class TabPage3Layout extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return new TabPage3();
+  }
+
+}
+
+class TabPage3 extends State<TabPage3Layout>{
+  int _currentIndex=0;
+  List<Widget> pages=[new HomePage(),new LoanPage(),new DynamicPage(),new MyPage()];
+  @override
+  Widget build(BuildContext context) {
+
+    _onBottomTabChange(int index) {
+      setState(() {
+        _currentIndex=index;
+      });
+    }
     return new Scaffold(
-      body: new Container(
-          alignment: Alignment.center,
-          color: Colors.redAccent,
-          child: new Text(
-            "home",
-            style: new TextStyle(color: Colors.black),
-          )),
+
+     body: new Container(
+       alignment: Alignment.center,
+       child: pages[_currentIndex],
+     ),
+      bottomNavigationBar: BottomNavigationBar(
+        //不设置该属性多于三个不显示颜色
+        selectedItemColor: Colors.red,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("首页")),
+          BottomNavigationBarItem(icon: Icon(Icons.reorder), title: Text("出借")),
+          BottomNavigationBarItem(icon: Icon(Icons.add_a_photo), title: Text("动态")),
+          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("我的"))
+        ],
+         currentIndex: _currentIndex,
+//        fixedColor: Colors.blue,s
+        onTap: (index) => _onBottomTabChange(index),
+      ),
     );
   }
 }
+
