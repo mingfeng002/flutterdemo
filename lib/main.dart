@@ -62,9 +62,9 @@ class TabPage3 extends State<TabPage3Layout>{
       });
     }
     return new Scaffold(
-
+     backgroundColor: Colors.red,
      body: new Container(
-       alignment: Alignment.center,
+       alignment: Alignment.topLeft,
        child: pages[_currentIndex],
      ),
       bottomNavigationBar: BottomNavigationBar(
