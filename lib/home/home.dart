@@ -139,7 +139,7 @@ class _topLayout extends StatelessWidget {
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
             height: 100,
             child: Carroussel(),
             // color: Colors.pink,
@@ -159,8 +159,20 @@ class Carroussel extends StatefulWidget {
 class _CarrousselState extends State<Carroussel> {
   PageController controller;
   int currentpage = 1;
-  List _pages=[new Container(color: Colors.pink,),new Container(color: Colors.blue,),
-    new Container(color: Colors.yellowAccent,),new Container(color: Colors.cyan,)];
+  List _pages = [
+    new Container(
+      color: Colors.pink,
+    ),
+    new Container(
+      color: Colors.blue,
+    ),
+    new Container(
+      color: Colors.yellowAccent,
+    ),
+    new Container(
+      color: Colors.cyan,
+    )
+  ];
 
   @override
   initState() {
@@ -180,18 +192,16 @@ class _CarrousselState extends State<Carroussel> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Center(
-        child: new Container(
-          child: new PageView.builder(
-              onPageChanged: (value) {
-                setState(() {
-                  currentpage = value;
-                });
-              },
-              controller: controller,
-              itemBuilder: (context, index) => builder(index)),
-        ),
+    return new Center(
+      child: new Container(
+        child: new PageView.builder(
+            onPageChanged: (value) {
+              setState(() {
+                currentpage = value;
+              });
+            },
+            controller: controller,
+            itemBuilder: (context, index) => builder(index)),
       ),
     );
   }
@@ -200,21 +210,26 @@ class _CarrousselState extends State<Carroussel> {
     return new AnimatedBuilder(
       animation: controller,
       builder: (context, child) {
-        double value = 1.0;
+        double value = 0.5;
+        if (index == 1) {
+          value = 1;
+        }
         if (controller.position.haveDimensions) {
           value = controller.page - index;
           value = (1 - (value.abs() * .5)).clamp(0.0, 1.0);
         }
         return new Center(
-          child: new SizedBox(
-            height: Curves.easeOut.transform(value) * 100,
+          child: Card(
+            child: SizedBox(
+              height: Curves.easeOut.transform(value) * 100,
 //            width: Curves.easeOut.transform(value) * 200,
-            width: 170,
-            child: child,
+              width: 170,
+              child: child,
+            ),
           ),
         );
       },
-      child: _pages[index%_pages.length],
+      child: _pages[index % _pages.length],
     );
   }
 }
